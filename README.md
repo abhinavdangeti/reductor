@@ -9,7 +9,9 @@ As of now, reductor offers 2 functional APIs - one to encode a provided list (Ad
 
 ## example
 Consider the following []uint32:
-    101, 105, 215, 218, 240, 260, 280, 290, 320, 325, 375, 480, 578, 690, 755
-This array has a footprint of 15 * 4 = 60 Bytes
-Using reductor, the footprint of the generated data structure is 22 Bytes.
-Thats a reduction of **63.33%**.
+
+            101, 105, 215, 218, 240, 260, 280, 290, 320, 325, 375, 480, 578, 690, 755
+
+- This array has a footprint of 15 * 4 = 60 Bytes
+- Using reductor, the footprint of the generated data structure is 22 Bytes.
+- Thats a reduction of **63.33%**.
