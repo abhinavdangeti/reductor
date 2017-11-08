@@ -6,8 +6,8 @@
 package reductor
 
 import (
+	"fmt"
 	"math"
-	"sort"
 	"strconv"
 )
 
@@ -38,10 +38,6 @@ func NewDeltaCompPostings() *DeltaCompPostings {
 func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
 	if len(arr) == 0 {
 		return fmt.Errorf("AddAll: Provided array is empty")
-	}
-
-	if !sort.IsSorted(arr) {
-		return fmt.Errorf("AddAll: Provided array is not sorted")
 	}
 
 	// Determine the deltas, note that that since the first entry
