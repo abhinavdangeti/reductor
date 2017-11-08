@@ -3,7 +3,7 @@
 // Author: Abhinav Dangeti
 //
 
-package main
+package reductor
 
 import (
 	"fmt"
@@ -37,14 +37,14 @@ func testBasic(t *testing.T, postings []uint32) {
 	dcp.AddAll(postings)
 
 	got := dcp.FetchAll()
-	if !checkEq(postings, got) {
-		t.Errorf("Expected: %v, Got: %v", postings, got)
-	}
 
 	fmt.Printf("Achieved a compression from %v bytes to %v bytes => %.4v%%\n",
 		len(postings)*4, dcp.Len(),
 		float64(len(postings)*4-dcp.Len())*100/float64(len(postings)*4))
 
+	if !checkEq(postings, got) {
+		t.Errorf("Expected: %v, Got: %v", postings, got)
+	}
 }
 
 func TestBasic1(t *testing.T) {
@@ -54,9 +54,16 @@ func TestBasic1(t *testing.T) {
 
 func TestBasic2(t *testing.T) {
 	postings := []uint32{
+		101, 105, 215, 218, 240,
+		260, 280, 290, 320, 325,
+		375, 480, 578, 690, 755}
+	testBasic(t, postings)
+}
+
+func TestBasic3(t *testing.T) {
+	postings := []uint32{
 		100, 102, 104, 108, 110,
 		120, 140, 200, 500, 622,
 		1402, 1550, 2000, 2529}
-
 	testBasic(t, postings)
 }
