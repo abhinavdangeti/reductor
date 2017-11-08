@@ -58,10 +58,6 @@ func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
 	// Calculate maximum number of bits needed to store every delta.
 	numBitsPerDelta := uint8(math.Log2(float64(largestDelta)) + 1)
 
-	dcp.firstEntry = firstEntry
-	dcp.numPostings = uint32(len(arr))
-	dcp.numBitsPerDelta = numBitsPerDelta
-
 	// Total bytes needed to hold all the deltas.
 	bytesNeededForDeltas :=
 		int(math.Ceil(float64(len(deltaArray)*int(numBitsPerDelta)) / 8.0))
@@ -107,6 +103,9 @@ func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
 		index++
 	}
 
+	dcp.firstEntry = firstEntry
+	dcp.numPostings = uint32(len(arr))
+	dcp.numBitsPerDelta = numBitsPerDelta
 	dcp.data = data
 
 	return nil
