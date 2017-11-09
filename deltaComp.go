@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"math"
 	"strconv"
+	"strings"
 )
 
 // DeltaCompPostings represents the provided postings list (which is
@@ -64,43 +65,49 @@ func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
 
 	data := make([]byte, bytesNeededForDeltas)
 
-	// Populate an aggregated bit string of the entire postings list,
-	// adding zeros where needed to ensure each delta occupies the
-	// estimated number of bits.
-	var bits string
-	for _, entry := range deltaArray {
-		i := strconv.FormatInt(int64(entry), 2)
-		j := ""
-		if len(i) < int(numBitsPerDelta) {
-			for k := 0; k < int(numBitsPerDelta)-len(i); k++ {
-				j = j + "0"
+	// This will be cursor for the data array.
+	cursor := 0
+
+	// This will be used to track each byte entry to the data array,
+	// this string will be populated until it reaches a length of 8.
+	// This is so to map it to a single byte later.
+	var entry string
+
+	// Iterate over the deltas and split them up in groups of 8 (a byte)
+	// and populate the data byte array with them.
+	for _, k := range deltaArray {
+		delta := strconv.FormatInt(int64(k), 2)
+		prefix := strings.Repeat("0", int(numBitsPerDelta)-len(delta))
+		delta = prefix + delta
+
+		for i := 0; i < len(delta); i++ {
+			if len(entry) == 8 {
+				// Now that entry has a length of 8 (so it can be mapped to
+				// a byte), add it into data after converting it into a byte.
+				x, _ := strconv.ParseUint(entry, 2, 8)
+				data[cursor] = byte(x)
+				cursor++
+
+				// Reset the entry string.
+				entry = ""
 			}
+
+			entry += string(delta[i])
 		}
-		bits = bits + j + i
 	}
 
-	// Iterate through the bits and split them up in groups of 8 (a byte)
-	// and this makes the data part of the DeltaCompPostings.
-	index := 0
-	for i := 0; i < len(bits); i += 8 {
-		j := 8 + i
-		if j >= len(bits) {
-			j = len(bits)
-		}
-
-		x, _ := strconv.ParseUint(bits[i:j], 2, 8)
+	// Add any remaining bits into the data byte array.
+	if len(entry) > 0 {
 		// Last case where, the number of bits left is less than 8 =>
-		// Left shift by (8 - (j - i)) if j - i < 8 so that bits are
-		// sequentially mapped, for example:
-		//     Consider splitting into bytes 010010100010:
+		// Suffix by zeros so that the bits are sequentially mapped.
+		// For example, Consider splitting into bytes 010010100010:
 		//     the 2 bytes should be: 01001010 and 00100000
 		//     and not: 01001010 and 00000010
-		if j-i < 8 {
-			x = x << uint(8-(j-i))
-		}
+		suffix := strings.Repeat("0", 8-len(entry))
+		entry = entry + suffix
 
-		data[index] = byte(x)
-		index++
+		x, _ := strconv.ParseUint(entry, 2, 8)
+		data[cursor] = byte(x)
 	}
 
 	dcp.firstEntry = firstEntry
