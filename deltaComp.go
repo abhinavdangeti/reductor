@@ -166,8 +166,8 @@ func (dcp *DeltaCompPostings) FetchAll() []uint32 {
 	return postings
 }
 
-// Len fetches the footprint of the DeltaCompPostings.
-func (dcp *DeltaCompPostings) Len() int {
+// SizeInBytes fetches the footprint of the DeltaCompPostings.
+func (dcp *DeltaCompPostings) SizeInBytes() int {
 	return 4 /* size of firstEntry (uint32) */ +
 		4 /* size of numPostings (uint32) */ +
 		1 /* size of numBitsPerDelta (uint8) */ +

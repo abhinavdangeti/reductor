@@ -47,8 +47,8 @@ func testBasic(t *testing.T, postings []uint32) {
 	fmt.Println("======================== RESULTS ==========================")
 	fmt.Println("Encoding time: ", encodeTime)
 	fmt.Printf("Achieved a compression from %v bytes to %v bytes => %.4v%%\n",
-		len(postings)*4, dcp.Len(),
-		float64(len(postings)*4-dcp.Len())*100/float64(len(postings)*4))
+		len(postings)*4, dcp.SizeInBytes(),
+		float64(len(postings)*4-dcp.SizeInBytes())*100/float64(len(postings)*4))
 	fmt.Println("Decoding time: ", decodeTime)
 	fmt.Println("===========================================================")
 
