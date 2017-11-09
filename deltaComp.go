@@ -13,12 +13,12 @@ import (
 
 // DeltaCompPostings represents the provided postings list (which is
 // an array of uint32s) in a highly compressed form by calculating
-// the deltas and the maximum bits needed to store each delta.
+// the deltas and the min number of bits needed to store each delta.
 type DeltaCompPostings struct {
 	// Metadata
 	firstEntry      uint32 // First entry of the provided list
 	numPostings     uint32 // Number of entries in the provided list
-	numBitsPerDelta uint8  // Max bits needed for storing any delta
+	numBitsPerDelta uint8  // Min bits needed for storing any delta
 
 	// Data
 	data []byte // Bit packed deltas
@@ -55,7 +55,7 @@ func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
 		deltaArray[i] = delta
 	}
 
-	// Calculate maximum number of bits needed to store every delta.
+	// Calculate minimum number of bits needed to store every delta.
 	numBitsPerDelta := uint8(math.Log2(float64(largestDelta)) + 1)
 
 	// Total bytes needed to hold all the deltas.
