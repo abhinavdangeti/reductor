@@ -58,7 +58,9 @@ func testBasic(t *testing.T, postings []uint32) {
 }
 
 func TestBasic1(t *testing.T) {
-	postings := []uint32{100, 102, 104, 108, 110}
+	postings := []uint32{
+		100, 102, 104, 108, 110,
+	}
 	testBasic(t, postings)
 }
 
@@ -66,7 +68,8 @@ func TestBasic2(t *testing.T) {
 	postings := []uint32{
 		101, 105, 215, 218, 240,
 		260, 280, 290, 320, 325,
-		375, 480, 578, 690, 755}
+		375, 480, 578, 690, 755,
+	}
 	testBasic(t, postings)
 }
 
@@ -74,7 +77,8 @@ func TestBasic3(t *testing.T) {
 	postings := []uint32{
 		100, 102, 104, 108, 110,
 		120, 140, 200, 500, 622,
-		1402, 1550, 2000, 2529}
+		1402, 1550, 2000, 2529,
+	}
 	testBasic(t, postings)
 }
 
