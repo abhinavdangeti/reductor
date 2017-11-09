@@ -36,19 +36,19 @@ func NewDeltaCompPostings() *DeltaCompPostings {
 //
 // The pre-requisite here is that the provided list needs to be
 // sorted.
-func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
-	if len(arr) == 0 {
-		return fmt.Errorf("AddAll: Provided array is empty")
+func (dcp *DeltaCompPostings) AddAll(postings []uint32) error {
+	if len(postings) == 0 {
+		return fmt.Errorf("AddAll: Empty postings list")
 	}
 
 	// Determine the deltas, note that that since the first entry
 	// in the provided postings list will be saved within metadata,
 	// the size of the delta array is one less than the provided list.
-	firstEntry := arr[0]
-	deltaArray := make([]uint32, len(arr)-1)
+	firstEntry := postings[0]
+	deltaArray := make([]uint32, len(postings)-1)
 	largestDelta := uint32(0)
-	for i := 0; i < len(arr)-1; i++ {
-		delta := arr[i+1] - arr[i]
+	for i := 0; i < len(postings)-1; i++ {
+		delta := postings[i+1] - postings[i]
 		if delta > largestDelta {
 			largestDelta = delta
 		}
@@ -111,7 +111,7 @@ func (dcp *DeltaCompPostings) AddAll(arr []uint32) error {
 	}
 
 	dcp.firstEntry = firstEntry
-	dcp.numPostings = uint32(len(arr))
+	dcp.numPostings = uint32(len(postings))
 	dcp.numBitsPerDelta = numBitsPerDelta
 	dcp.data = data
 
