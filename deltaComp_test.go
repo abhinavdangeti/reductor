@@ -37,11 +37,11 @@ func testBasic(t *testing.T, postings []uint32) {
 	dcp := NewDeltaCompPostings()
 
 	start := time.Now()
-	dcp.AddAll(postings)
+	dcp.Encode(postings)
 	encodeTime := time.Since(start)
 
 	start = time.Now()
-	got := dcp.FetchAll()
+	got := dcp.Decode()
 	decodeTime := time.Since(start)
 
 	fmt.Println("======================== RESULTS ==========================")

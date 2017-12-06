@@ -30,15 +30,15 @@ func NewDeltaCompPostings() *DeltaCompPostings {
 	return &DeltaCompPostings{}
 }
 
-// AddAll derives the deltas from the provided postings list and
+// Encode derives the deltas from the provided postings list and
 // builds the metadata and the minimalist byte array needed for
 // storing all the meaningful content of the positings list.
 //
 // The pre-requisite here is that the provided list needs to be
 // sorted.
-func (dcp *DeltaCompPostings) AddAll(postings []uint32) error {
+func (dcp *DeltaCompPostings) Encode(postings []uint32) error {
 	if len(postings) == 0 {
-		return fmt.Errorf("AddAll: Empty postings list")
+		return fmt.Errorf("Encode: Empty postings list")
 	}
 
 	// Determine the deltas, note that that since the first entry
@@ -118,9 +118,9 @@ func (dcp *DeltaCompPostings) AddAll(postings []uint32) error {
 	return nil
 }
 
-// FetchAll decodes the stored delta postings, and returns the
+// Decode decodes the stored delta postings, and returns the
 // original postings list.
-func (dcp *DeltaCompPostings) FetchAll() []uint32 {
+func (dcp *DeltaCompPostings) Decode() []uint32 {
 	if dcp.numPostings == 0 {
 		return []uint32{}
 	}
