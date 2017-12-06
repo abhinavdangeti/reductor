@@ -17,7 +17,8 @@ Consider the following []uint32:
 - That's a reduction of **63.33%**.
 
 ## future / to-do
-- Accommodating numeric pairs as []{uint32, uint16}, the new uint16 or even uint8 is to denote the term frequencies.
+- Accommodate unsorted postings lists => storing signed deltas.
+- Accommodate numeric pairs as []{uint32, uint16}, the new uint16 or even uint8 is to denote other properties such as term frequencies.
 - Multiple blocks to accommodate the postings, so we could potentially further reduce the number of bits used for the deltas.
 - Supporting merge operations?
 - More services (apis) ...
