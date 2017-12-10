@@ -8,13 +8,20 @@ Reductor assumes that the provided postings list is already sorted. It estimates
 As of now, reductor offers 2 functional APIs - one to encode a provided list (Encode), two to decode a provided list (Decode). An additional API to retrieve the size/footprint of the encoded data structure is also available (SizeInBytes).
 
 ## example
-Consider the following []uint32:
+Consider the following []uint64:
 
             101, 105, 215, 218, 240, 260, 280, 290, 320, 325, 375, 480, 578, 690, 755
 
-- This array has a footprint of 15 * 4 = 60 Bytes.
-- Using reductor, the footprint of the generated data structure is 22 Bytes.
-- That's a reduction of **63.33%**.
+- This array has a footprint of 15 * 8 = 120 Bytes.
+- Using reductor, and taking advantage of the fact that the list is sorted, the footprint of the generated data structure is 27 Bytes.
+- That's a reduction of **77.5%**.
+
+If the same list were presented unsorted:
+
+            280, 105, 215, 690, 240, 578, 101, 320, 755, 325, 375, 480, 260, 218, 290
+
+- Using reductor, the footprint of the generated data structure is 32 Bytes.
+- That's a reduction of **73.33%**.
 
 ## future / to-do
 - Multiple blocks to accommodate the postings, so we could potentially further reduce the number of bits used for the deltas, and quicken lookup.

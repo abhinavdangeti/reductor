@@ -120,6 +120,15 @@ func TestUnsorted1(t *testing.T) {
 
 func TestUnsorted2(t *testing.T) {
 	postings := []uint64{
+		280, 105, 215, 690, 240,
+		578, 101, 320, 755, 325,
+		375, 480, 260, 218, 290,
+	}
+	test(t, postings, false)
+}
+
+func TestUnsorted3(t *testing.T) {
+	postings := []uint64{
 		2000, 1010, 700, 120, 110,
 		300, 100, 250, 500, 622,
 		1402, 550, 2600, 1300,
@@ -127,7 +136,7 @@ func TestUnsorted2(t *testing.T) {
 	test(t, postings, false)
 }
 
-func TestUnsorted3(t *testing.T) {
+func TestUnsorted4(t *testing.T) {
 	postings := []uint64{
 		1400, 1592, 1946, 2000, 2239,
 		34, 556, 600, 1234, 1270,
