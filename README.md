@@ -17,7 +17,6 @@ Consider the following []uint32:
 - That's a reduction of **63.33%**.
 
 ## future / to-do
-- Accommodate unsorted postings lists => storing signed deltas.
 - Multiple blocks to accommodate the postings, so we could potentially further reduce the number of bits used for the deltas, and quicken lookup.
 - Supporting merge operations
 - More services (apis) ...
