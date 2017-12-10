@@ -39,15 +39,15 @@ func NewDeltaCompPostings() *DeltaCompPostings {
 	return &DeltaCompPostings{}
 }
 
-// Encode derives the deltas from the provided postings list and
-// builds the metadata and the minimalist byte array needed for
+// EncodeSorted derives the deltas from the provided postings list
+// and builds the metadata and the minimalist byte array needed for
 // storing all the meaningful content of the positings list.
 //
 // The pre-requisite here is that the provided list needs to be
 // sorted.
-func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
+func (dcp *DeltaCompPostings) EncodeSorted(postings []uint64) error {
 	if len(postings) == 0 {
-		return fmt.Errorf("Encode: Empty postings list")
+		return fmt.Errorf("EncodeSorted: Empty postings list")
 	}
 
 	// Determine the deltas, note that since the first entry in the
@@ -128,14 +128,14 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	return nil
 }
 
-// EncodeUnsorted derives the deltas from the provided postings list
-// and builds the metadata and the minimalist byte array needed for
+// Encode derives the deltas from the provided postings list and
+// builds the metadata and the minimalist byte array needed for
 // storing all the meaningful content of the positings list.
 //
-// The provided list can be unsorted.
-func (dcp *DeltaCompPostings) EncodeUnsorted(postings []uint64) error {
+// The provided list CAN be unsorted.
+func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	if len(postings) == 0 {
-		return fmt.Errorf("EncodeUnsorted: Empty postings list")
+		return fmt.Errorf("Encode: Empty postings list")
 	}
 
 	// Determine the deltas, note that since the first entry in the
@@ -158,11 +158,12 @@ func (dcp *DeltaCompPostings) EncodeUnsorted(postings []uint64) error {
 	}
 
 	// Calculate minimum number of bits needed to store every delta,
-	// the first bit to represent the sign of the delta.
+	// and one extra bit to represent the sign of the delta.
 	// For example, if the largest delta without the sign takes 4 bits,
+	// 5 bits will be used for the deltas - 1 for the sign, and 4 for value.
 	//     A 2 is represented as: 00010.
 	//     A -2 is represented asL 10010.
-	numBitsPerDelta := uint8(math.Log2(float64(largestDelta)) + 1 + 1)
+	numBitsPerDelta := uint8(1) + uint8(math.Log2(float64(largestDelta)) + 1)
 
 	// Total bytes needed to hold all the deltas.
 	bytesNeededForDeltas :=

@@ -38,9 +38,9 @@ func test(t *testing.T, postings []uint64, sorted bool) {
 
 	start := time.Now()
 	if sorted {
-		dcp.Encode(postings)
+		dcp.EncodeSorted(postings)
 	} else {
-		dcp.EncodeUnsorted(postings)
+		dcp.Encode(postings)
 	}
 	encodeTime := time.Since(start)
 
