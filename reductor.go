@@ -182,12 +182,12 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	// Iterate over the deltas and split them up in groups of 8 (a byte)
 	// and populate the data byte array with them.
 	for _, k := range deltaArray {
-		kEdit := k
-		if kEdit < 0 {
-			kEdit = kEdit * (-1)
+		editedK := k
+		if editedK < 0 {
+			editedK = editedK * (-1)
 		}
 
-		delta := strconv.FormatInt(kEdit, 2)
+		delta := strconv.FormatInt(editedK, 2)
 		prefix := strings.Repeat("0", int(numBitsPerDelta)-len(delta))
 		if k < 0 {
 			// Prefix's length is at least 1, always. So no need for any
