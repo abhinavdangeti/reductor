@@ -163,7 +163,7 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	// 5 bits will be used for the deltas - 1 for the sign, and 4 for value.
 	//     A 2 is represented as: 00010.
 	//     A -2 is represented asL 10010.
-	numBitsPerDelta := uint8(1) + uint8(math.Log2(float64(largestDelta)) + 1)
+	numBitsPerDelta := uint8(1) + uint8(math.Log2(float64(largestDelta))+1)
 
 	// Total bytes needed to hold all the deltas.
 	bytesNeededForDeltas :=
@@ -190,7 +190,7 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 		delta := strconv.FormatInt(k_edit, 2)
 		prefix := strings.Repeat("0", int(numBitsPerDelta)-len(delta))
 		if k < 0 {
-			// Prefix's length is at least 1, always. So need for any
+			// Prefix's length is at least 1, always. So no need for any
 			// safety check here.
 			prefix = "1" + prefix[1:]
 		}
@@ -198,7 +198,7 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 
 		for i := 0; i < len(delta); i++ {
 			if len(entry) == 8 {
-				// Now that entry has a length of 8 (so it can be mapped to
+				// Now that the entry has a length of 8 (so it can be mapped to
 				// a byte), add it into data after converting it into a byte.
 				x, _ := strconv.ParseUint(entry, 2, 8)
 				data[cursor] = byte(x)
@@ -300,16 +300,16 @@ func (dcp *DeltaCompPostings) decodeUnsorted() []uint64 {
 	entriesAdded := 0
 	lastEntrySign := 0
 
-	// Decode the encoded deltas, consider the sign and then
-	// add them into the postings array instantiated previously.
+	// Decode the encoded deltas, consider the sign before adding
+	// them into the deltas array instantiated previously.
 	for i := 0; i < len(dcp.data); i++ {
 		for j := uint(0); j < 8; j++ {
 			if shiftBy == dcp.numBitsPerDelta {
 				lastEntrySign = int(dcp.data[i] & (128 >> j) >> uint(7-j))
 				shiftBy--
 				j++
-				// If the sign was in the last bit of a byte, break out and
-				// continue with the next byte.
+				// If the sign's position was the last bit of a byte,
+				// break out and continue with the next byte.
 				if j > 7 {
 					break
 				}
