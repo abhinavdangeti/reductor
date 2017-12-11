@@ -1,8 +1,11 @@
 [![Go Report Card](https://goreportcard.com/badge/abhinavdangeti/reductor)](https://goreportcard.com/report/abhinavdangeti/reductor)
+[![Build Status](https://travis-ci.org/abhinavdangeti/reductor.svg?branch=master)](https://travis-ci.org/abhinavdangeti/reductor)
+[![Coverage Status](https://coveralls.io/repos/abhinavdangeti/reductor/badge.png?branch=master)](https://coveralls.io/r/abhinavdangeti/reductor?branch=master)
+[![GoDoc](https://godoc.org/github.com/abhinavdangeti/reductor?status.svg)](https://godoc.org/github.com/abhinavdangeti/reductor)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # reductor
-This library/tool aims at reducing the footprint of a postings list (an array of uint32s).
+This library/tool aims at reducing the footprint of a postings list (an array of uint64s).
 
 ## how does it work
 Reductor assumes that the provided postings list is already sorted. It estimates the difference or the delta between adjacent entries and stores the deltas which are much smaller values than the original entries. These deltas are then bit-packed (after estimating the minimum number of bits needed to store each delta) to form a highly compressed data structure carrying all the necessary information needed to rebuild the original postings list.
