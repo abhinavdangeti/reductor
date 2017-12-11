@@ -12,10 +12,10 @@ import (
 	"strings"
 )
 
-type version_t uint8
+type postingsType uint8
 
 const (
-	sortedList = version_t(iota)
+	sortedList = postingsType(iota)
 	unsortedList
 )
 
@@ -28,13 +28,13 @@ type DeltaCompPostings struct {
 	numPostings     uint32 // Number of entries in the provided list
 	numBitsPerDelta uint8  // Min bits needed for storing any delta
 
-	version version_t // Type of postings => sorted, unsorted
+	ptype postingsType // Type of postings => sorted, unsorted
 
 	// Data
 	data []byte // Bit packed deltas
 }
 
-// Returns an empty DeltaCompPostings.
+// NewDeltaCompPostings initializes and returns an empty DeltaCompPostings.
 func NewDeltaCompPostings() *DeltaCompPostings {
 	return &DeltaCompPostings{}
 }
@@ -122,7 +122,7 @@ func (dcp *DeltaCompPostings) EncodeSorted(postings []uint64) error {
 	dcp.firstEntry = firstEntry
 	dcp.numPostings = uint32(len(postings))
 	dcp.numBitsPerDelta = numBitsPerDelta
-	dcp.version = sortedList
+	dcp.ptype = sortedList
 	dcp.data = data
 
 	return nil
@@ -146,12 +146,12 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	largestDelta := uint64(0)
 	for i := 0; i < len(postings)-1; i++ {
 		delta := int64(postings[i+1] - postings[i])
-		delta_edit := delta
-		if delta_edit < 0 {
-			delta_edit = delta_edit * (-1)
+		deltaEdit := delta
+		if deltaEdit < 0 {
+			deltaEdit = deltaEdit * (-1)
 		}
-		if uint64(delta_edit) > largestDelta {
-			largestDelta = uint64(delta_edit)
+		if uint64(deltaEdit) > largestDelta {
+			largestDelta = uint64(deltaEdit)
 		}
 
 		deltaArray[i] = delta
@@ -182,12 +182,12 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	// Iterate over the deltas and split them up in groups of 8 (a byte)
 	// and populate the data byte array with them.
 	for _, k := range deltaArray {
-		k_edit := k
-		if k_edit < 0 {
-			k_edit = k_edit * (-1)
+		kEdit := k
+		if kEdit < 0 {
+			kEdit = kEdit * (-1)
 		}
 
-		delta := strconv.FormatInt(k_edit, 2)
+		delta := strconv.FormatInt(kEdit, 2)
 		prefix := strings.Repeat("0", int(numBitsPerDelta)-len(delta))
 		if k < 0 {
 			// Prefix's length is at least 1, always. So no need for any
@@ -229,7 +229,7 @@ func (dcp *DeltaCompPostings) Encode(postings []uint64) error {
 	dcp.firstEntry = firstEntry
 	dcp.numPostings = uint32(len(postings))
 	dcp.numBitsPerDelta = numBitsPerDelta
-	dcp.version = unsortedList
+	dcp.ptype = unsortedList
 	dcp.data = data
 
 	return nil
@@ -242,11 +242,11 @@ func (dcp *DeltaCompPostings) Decode() []uint64 {
 		return []uint64{}
 	}
 
-	if dcp.version == sortedList {
+	if dcp.ptype == sortedList {
 		return dcp.decodeSorted()
-	} else { // unsortedList
-		return dcp.decodeUnsorted()
 	}
+
+	return dcp.decodeUnsorted()
 }
 
 func (dcp *DeltaCompPostings) decodeSorted() []uint64 {
@@ -355,6 +355,6 @@ func (dcp *DeltaCompPostings) SizeInBytes() int {
 	return 8 /* size of firstEntry (uint64) */ +
 		4 /* size of numPostings (uint32) */ +
 		1 /* size of numBitsPerDelta (uint8) */ +
-		1 /* size of version (uint8) */ +
+		1 /* size of ptype (uint8) */ +
 		len(dcp.data)
 }

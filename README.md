@@ -1,3 +1,6 @@
+[![Go Report Card](https://goreportcard.com/badge/abhinavdangeti/reductor)](https://goreportcard.com/report/abhinavdangeti/reductor)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 # reductor
 This library/tool aims at reducing the footprint of a postings list (an array of uint32s).
 
