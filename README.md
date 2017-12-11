@@ -5,7 +5,12 @@ This library/tool aims at reducing the footprint of a postings list (an array of
 Reductor assumes that the provided postings list is already sorted. It estimates the difference or the delta between adjacent entries and stores the deltas which are much smaller values than the original entries. These deltas are then bit-packed (after estimating the minimum number of bits needed to store each delta) to form a highly compressed data structure carrying all the necessary information needed to rebuild the original postings list.
 
 ## available APIs
-As of now, reductor offers 2 functional APIs - one to encode a provided list (Encode), two to decode a provided list (Decode). An additional API to retrieve the size/footprint of the encoded data structure is also available (SizeInBytes).
+Reductor offers the following APIS:
+
+- EncodeSorted (This is to encode a sorted []uint64)
+- Encode (This is to encode a []uint64 that could be unsorted)
+- Decode (This is to decode a previously encoded postings list - be it sorted or not)
+- SizeInBytes (This is to fetch the size in bytes of the encoded postings list)
 
 ## example
 Consider the following []uint64:
