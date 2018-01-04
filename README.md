@@ -1,5 +1,6 @@
 [![Go Report Card](https://goreportcard.com/badge/abhinavdangeti/reductor)](https://goreportcard.com/report/abhinavdangeti/reductor)
 [![Build Status](https://travis-ci.org/abhinavdangeti/reductor.svg?branch=master)](https://travis-ci.org/abhinavdangeti/reductor)
+[![Coverage Status](https://coveralls.io/repos/abhinavdangeti/reductor/badge.png?branch=master)](https://coveralls.io/r/abhinavdangeti/reductor?branch=master)
 [![GoDoc](https://godoc.org/github.com/abhinavdangeti/reductor?status.svg)](https://godoc.org/github.com/abhinavdangeti/reductor)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
