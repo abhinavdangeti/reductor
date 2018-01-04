@@ -36,8 +36,6 @@ If the same list were presented unsorted:
 
 ## future / to-do
 - Multiple blocks to accommodate the postings, so we could potentially further reduce the number of bits used for the deltas, and quicken lookup.
-- Supporting merge operations.
 - APIs to support operations over multiple postings lists:
-
     - Merge operations
     - Intersecion/union/difference
