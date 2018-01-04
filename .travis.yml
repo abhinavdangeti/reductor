@@ -1,20 +1,20 @@
 sudo: false
-
 language: go
-
 go:
-    - 1.6.x
-    - 1.7.x
-    - 1.8.x
-    - 1.9.x
-
+- 1.6.x
+- 1.7.x
+- 1.8.x
+- 1.9.x
 script:
-    - go get golang.org/x/tools/cmd/cover
-    - go get github.com/mattn/goveralls
-    - go get github.com/kisielk/errcheck
-    - go get -u github.com/FiloSottile/gvt
-    - gvt restore
-    - go test -v $(go list ./... | grep -v vendor/)
-    - go vet $(go list ./... | grep -v vendor/)
-    - errcheck $(go list ./... | grep -v vendor/)
-    - docs/project-code-coverage.sh
+- go get golang.org/x/tools/cmd/cover
+- go get github.com/mattn/goveralls
+- go get github.com/kisielk/errcheck
+- go get -u github.com/FiloSottile/gvt
+- gvt restore
+- go test -v $(go list ./... | grep -v vendor/)
+- go vet $(go list ./... | grep -v vendor/)
+- errcheck $(go list ./... | grep -v vendor/)
+- docs/project-code-coverage.sh
+env:
+  global:
+    secure: cQirt5hOWBkaNz2DA+BOJUJB29lfsgq4z1KuoYHo+qEgjRDpu1aSE6eC9RH6cSlohzqVhTp8E+dSZt0tMOxaCk1+rhI6x3XwJ+i56hJ1Rl9Q6V5oHCMvElOh9IkQ4Dx835Er2nxcCl1ei3lDTGPXOYclfwxzQtWQ7bd7Vn9a9RTxVg8CFNLNd2WcOiMKO4Yz508aeMQnQKMIVUU4Y0HHhnH/7ZDsFWQ0OmqAhE3nVmI9PnoKuHibL1WbJjp+Ivic56gH5UBHCXsEMqU3SjKWDh4sJ8sCLOvUiks08hiTn8ZSsbxEFWCHOX+oU/yeETAC/nITYWHTSm9Kyvzj2/qm5DlTY2ZZALkXFUEiFs/FzW6tVNCT5UChGw1+B7JbV3xunWZB7sApz8ytqbJid1QodA7sSSUmLPgBisUTKQEIjSIUByDOg1AqjHND8HqXnVENTGZu2V6wTxGFQAgl5hN4M+z3l8BvjLwncgOxX6708CfnMYVEt7T41o3eFuOv3u+bnk37kSYMHOSbWqBa7K20Bs14H3F2Dl0uSjmP+fyVKOQYWgTKL/kAlqM55xLEpcZrJi9sKNdzCbRLo5WOTC5Sp8gL7eaLwdB/2DQSxI0edw4fg7xCgZokX965+tNr1pMiUSlQU8O9wTXGjcdbhiV0r9FQHjLyfbou+Zt9LwqxB/k=
