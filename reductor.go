@@ -356,5 +356,6 @@ func (dcp *DeltaCompPostings) SizeInBytes() int {
 		4 /* size of numPostings (uint32) */ +
 		1 /* size of numBitsPerDelta (uint8) */ +
 		1 /* size of ptype (uint8) */ +
-		len(dcp.data)
+		len(dcp.data) +
+		24 /* overhead from data structure - byte slice on 64-bit system */
 }
