@@ -48,11 +48,12 @@ func test(t *testing.T, postings []uint64, sorted bool) {
 	got := dcp.Decode()
 	decodeTime := time.Since(start)
 
+	postingsFootprint := len(postings)*8 + 24 /* overhead from slice */
 	fmt.Println("======================== RESULTS ==========================")
 	fmt.Println("Encoding time: ", encodeTime)
 	fmt.Printf("Achieved a compression from %v bytes to %v bytes => %.4v%%\n",
-		len(postings)*8, dcp.SizeInBytes(),
-		float64(len(postings)*8-dcp.SizeInBytes())*100/float64(len(postings)*8))
+		postingsFootprint, dcp.SizeInBytes(),
+		float64(postingsFootprint-dcp.SizeInBytes())*100/float64(postingsFootprint))
 	fmt.Println("Decoding time: ", decodeTime)
 	fmt.Println("===========================================================")
 
