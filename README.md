@@ -24,15 +24,15 @@ Consider the following []uint64:
             101, 105, 215, 218, 240, 260, 280, 290, 320, 325, 375, 480, 578, 690, 755
 
 - This array has a footprint of 15 * 8 + 24 (overhead) = 144 Bytes.
-- Taking advantage of the fact that the list is sorted, using reductor's EncodeSorted(), the footprint of the generated data structure is 51 Bytes.
-- That's a reduction of **64.58%**.
+- Taking advantage of the fact that the list is sorted, using reductor's EncodeSorted(), the footprint of the generated data structure is 53 Bytes.
+- That's a reduction of **63.19%**.
 
 If the same list were presented unsorted:
 
             280, 105, 215, 690, 240, 578, 101, 320, 755, 325, 375, 480, 260, 218, 290
 
-- Using reductor's Encode(), the footprint of the generated data structure is 56 Bytes.
-- That's a reduction of **61.11%**.
+- Using reductor's Encode(), the footprint of the generated data structure is 58 Bytes.
+- That's a reduction of **59.72%**.
 
 ## future / to-do
 - Multiple blocks to accommodate the postings, so we could potentially further reduce the number of bits used for the deltas, and quicken lookup.

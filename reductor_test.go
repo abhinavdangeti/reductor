@@ -7,6 +7,7 @@ package reductor
 
 import (
 	"fmt"
+	"reflect"
 	"testing"
 	"time"
 )
@@ -48,7 +49,8 @@ func test(t *testing.T, postings []uint64, sorted bool) {
 	got := dcp.Decode()
 	decodeTime := time.Since(start)
 
-	postingsFootprint := len(postings)*8 + 24 /* overhead from slice */
+	// account for overhead from slice as well
+	postingsFootprint := len(postings)*8 + int(reflect.TypeOf(postings).Size())
 	fmt.Println("======================== RESULTS ==========================")
 	fmt.Println("Encoding time: ", encodeTime)
 	fmt.Printf("Achieved a compression from %v bytes to %v bytes => %.4v%%\n",
