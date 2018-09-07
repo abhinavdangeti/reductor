@@ -8,6 +8,7 @@ package reductor
 import (
 	"fmt"
 	"math"
+	"reflect"
 	"strconv"
 	"strings"
 )
@@ -18,6 +19,13 @@ const (
 	sortedList = postingsType(iota)
 	unsortedList
 )
+
+var reflectStaticSizeDeltaCompPostings int
+
+func init() {
+	var dcp DeltaCompPostings
+	reflectStaticSizeDeltaCompPostings = int(reflect.TypeOf(dcp).Size())
+}
 
 // DeltaCompPostings represents the provided postings list (which is
 // an array of uint64s) in a highly compressed form by calculating
@@ -352,10 +360,5 @@ func (dcp *DeltaCompPostings) decodeUnsorted() []uint64 {
 
 // SizeInBytes fetches the footprint of the DeltaCompPostings.
 func (dcp *DeltaCompPostings) SizeInBytes() int {
-	return 8 /* size of firstEntry (uint64) */ +
-		4 /* size of numPostings (uint32) */ +
-		1 /* size of numBitsPerDelta (uint8) */ +
-		1 /* size of ptype (uint8) */ +
-		len(dcp.data) +
-		24 /* overhead from data structure - byte slice on 64-bit system */
+	return reflectStaticSizeDeltaCompPostings + len(dcp.data)
 }
