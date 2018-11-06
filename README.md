@@ -5,7 +5,7 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 # reductor
-This library/tool aims at reducing the footprint of a postings list (an array of uint64s).
+This library aims at reducing the footprint of a postings list (an array of uint64s).
 
 ## how does it work
 Reductor can work with sorted and unsorted postings lists. It first estimates the difference or the deltas between adjacent entries. These deltas are typically much smaller values than the original entries. These deltas are then bit-packed (after estimating the minimum number of bits needed to store each delta) to form a highly compressed data structure carrying all the necessary information needed to rebuild the original postings list.
