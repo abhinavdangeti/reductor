@@ -8,7 +8,7 @@
 This library/tool aims at reducing the footprint of a postings list (an array of uint64s).
 
 ## how does it work
-Reductor can work with sorted and unsorted postings lists. It estimates the difference or the delta between adjacent entries and stores the deltas which are much smaller values than the original entries. These deltas are then bit-packed (after estimating the minimum number of bits needed to store each delta) to form a highly compressed data structure carrying all the necessary information needed to rebuild the original postings list.
+Reductor can work with sorted and unsorted postings lists. It first estimates the difference or the deltas between adjacent entries. These deltas are typically much smaller values than the original entries. These deltas are then bit-packed (after estimating the minimum number of bits needed to store each delta) to form a highly compressed data structure carrying all the necessary information needed to rebuild the original postings list.
 
 ## available APIs
 Reductor offers the following APIs:
@@ -34,8 +34,8 @@ If the same list were presented unsorted:
 - Using reductor's Encode(), the footprint of the generated data structure is 58 Bytes.
 - That's a reduction of **59.72%**.
 
-## future / to-do
-- Multiple blocks to accommodate the postings, so we could potentially further reduce the number of bits used for the deltas, and quicken lookup.
+## future work
+- Split the encoding into multiple blocks of postings. This would further reduce the number of bits used for the deltas, and most importantly - quicken point lookup.
 - APIs to support operations over multiple postings lists:
-    - Merge operations
+    - Merge
     - Intersection/Union/Difference
